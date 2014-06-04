@@ -49,10 +49,10 @@ class Command
  * Set command and optionally set data
  * - return if set command is valid
  *
- * @param	string	$name
- * @param	array	$data	[= []]
- * @access	public
- * @return	bool
+ * @param string $name
+ * @param array $data [= []]
+ * @access public
+ * @return bool
  */
     public function set($name, array $data = [])
     {
