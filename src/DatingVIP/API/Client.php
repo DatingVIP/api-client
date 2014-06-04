@@ -86,7 +86,7 @@ class Client
  *
  * @param Command $command
  * @access public
- * @return Response
+ * @return \DatingVIP\API\Response
  * @throws \Exception
  */
     public function execute(Command $command)
