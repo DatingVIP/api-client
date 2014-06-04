@@ -18,8 +18,8 @@
 		"datingvip/curl": "dev-master"
     },
     "autoload": {
-        "psr-4": {
-            "DatingVIP\\API\\": "src"
+        "psr-0": {
+            "DatingVIP": "src"
         }
     }
 }
