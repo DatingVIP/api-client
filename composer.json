@@ -1,0 +1,25 @@
+{
+    "name": "datingvip/api",
+    "type": "library",
+    "description": "DatingVIP API Client",
+    "keywords": ["datingvip", "api client"],
+    "homepage": "https://github.com/DatingVIP/api-client",
+    "license": "LGPLv3",
+    "authors": [
+        {
+            "name": "Boris Momčilović",
+            "email": "boris@firstbeatmedia.com",
+            "homepage": "http://firstbeatmedia.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+		"datingvip/curl": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "DatingVIP\\API\\": "src"
+        }
+    }
+}

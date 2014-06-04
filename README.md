@@ -1,4 +1,4 @@
-co-reg-api
-==========
+DatingVIP API Client
+====================
 
-Co-Registration API (PHP)
+PHP implementation of API client to DatingVIP platform
