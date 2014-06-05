@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "be3888bca89629c42120729d4a77134d",
+    "hash": "4537e33b902a9bca31d60322035ab4a4",
     "packages": [
         {
             "name": "datingvip/curl",
