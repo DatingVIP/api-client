@@ -142,7 +142,7 @@ class Client
             $this->curl->setCredentials ($this->user, $this->pass);
         }
 
-        return $this->curl->setOption (CURLOPT_TIMEOUT, $this->timeout);
+        return $this->curl->setTimeout ($this->timeout);
     }
 
 /**
