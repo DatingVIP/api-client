@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "4537e33b902a9bca31d60322035ab4a4",
+    "hash": "00e4a7c7577961ad4995e5cb9a52668f",
     "packages": [
         {
             "name": "datingvip/curl",
-            "version": "dev-master",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DatingVIP/cURL.git",
-                "reference": "2301689cceb03f73a72338c0a686f88d0c04cf6f"
+                "reference": "86da994ad464593d7979c73bf5d734f07a9c5472"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DatingVIP/cURL/zipball/2301689cceb03f73a72338c0a686f88d0c04cf6f",
-                "reference": "2301689cceb03f73a72338c0a686f88d0c04cf6f",
+                "url": "https://api.github.com/repos/DatingVIP/cURL/zipball/86da994ad464593d7979c73bf5d734f07a9c5472",
+                "reference": "86da994ad464593d7979c73bf5d734f07a9c5472",
                 "shasum": ""
             },
             "require": {
@@ -45,15 +45,13 @@
             "keywords": [
                 "curl"
             ],
-            "time": "2014-06-05 07:56:07"
+            "time": "2014-06-19 12:15:33"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "datingvip/curl": 20
-    },
+    "stability-flags": [],
     "platform": {
         "php": ">=5.4.0"
     },
