@@ -39,9 +39,17 @@ class Client
  * API authorization pass
  *
  * @var string $pass
- * @access	protected
+ * @access protected
  */
     protected $pass;
+
+/**
+ * API authorization pass
+ *
+ * @var int $timeout [= 5]
+ * @access protected
+ */
+    protected $timeout = 5;
 
 /**
  * Instance of DatingVIP\cURL\Request lib
@@ -82,6 +90,21 @@ class Client
     }
 
 /**
+ * Set request timeout value (in seconds)
+ *
+ * @param int $timeout
+ * @access public
+ * @return int
+ */
+    public function setTimeout($timeout)
+    {
+        $timeout = is_scalar ($timeout) ? (int) $timeout : 0;
+        return $timeout < 1
+            ? $this->timeout
+            : $this->timeout = $timeout;
+    }
+
+/**
  * Execute API command
  *
  * @param Command $command
@@ -119,7 +142,7 @@ class Client
             $this->curl->setCredentials ($this->user, $this->pass);
         }
 
-        return $this->curl;
+        return $this->curl->setTimeout ($this->timeout);
     }
 
 /**
