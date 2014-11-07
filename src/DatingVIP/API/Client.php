@@ -149,10 +149,10 @@ class Client
  * Get API URL for given command
  *
  * @param Command $command
- * @access private
+ * @access protected
  * @return string
  */
-    private function getUrl(Command $command)
+    protected function getUrl(Command $command)
     {
         return $this->url
             . (stripos ($this->url, '?') !== false ? '&' : '?')
