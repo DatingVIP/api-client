@@ -1,9 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "00e4a7c7577961ad4995e5cb9a52668f",
+    "hash": "7fba72dc846461773db65ab113aee7d8",
+    "content-hash": "625c6592f5e31f95bce8f001d8df70d6",
     "packages": [
         {
             "name": "datingvip/curl",
@@ -52,6 +54,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.0"
     },
