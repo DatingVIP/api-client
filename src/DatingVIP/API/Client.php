@@ -1,12 +1,12 @@
 <?php
 /**
- * API Client
+ * API Client.
  *
- * @package DatingVIP
- * @subpackage api
  * @category lib
+ *
  * @author Boris Momčilović <boris@firstbeatmedia.com>
  * @copyright All rights reserved
+ *
  * @version 1.0
  */
 
@@ -19,157 +19,168 @@ class Client
 {
     const COMMAND = 'cmd';
 
-/**
- * API URL
- *
- * @var string
- * @access protected
- */
+    /**
+     * API URL.
+     *
+     * @var string
+     */
     protected $url;
 
-/**
- * API authorization user
- *
- * @var string
- * @access protected
- */
+    /**
+     * API authorization user.
+     *
+     * @var string
+     */
     protected $user;
 
-/**
- * API authorization pass
- *
- * @var string $pass
- * @access protected
- */
+    /**
+     * API authorization pass.
+     *
+     * @var string
+     */
     protected $pass;
 
-/**
- * API authorization pass
- *
- * @var int $timeout [= 5]
- * @access protected
- */
+    /**
+     * API authorization pass.
+     *
+     * @var int [= 5]
+     */
     protected $timeout = 5;
 
-/**
- * Instance of DatingVIP\cURL\Request lib
- *
- * @var Request
- * @access private
- */
+    /**
+     * Instance of DatingVIP\cURL\Request lib.
+     *
+     * @var Request
+     */
     private $curl;
 
-/**
- * Set API url
- *
- * @param string $url
- * @access public
- * @return bool
- */
+    /**
+     * Set API url.
+     *
+     * @param string $url
+     *
+     * @return bool
+     */
     public function setUrl($url)
     {
         $this->url = (string) $url;
 
-        return !empty ($this->url);
+        return !empty($this->url);
     }
 
-/**
- * Set auth data for API
- *
- * @param string $user
- * @param string $pass
- * @access public
- * @return bool
- */
+    /**
+     * Set auth data for API.
+     *
+     * @param string $user
+     * @param string $pass
+     *
+     * @return bool
+     */
     public function setAuth($user, $pass)
     {
-        $this->user	= (string) $user;
-        $this->pass	= (string) $pass;
+        $this->user = (string) $user;
+        $this->pass = (string) $pass;
 
-        return $this->hasAuth ();
+        return $this->hasAuth();
     }
 
-/**
- * Set request timeout value (in seconds)
- *
- * @param int $timeout
- * @access public
- * @return int
- */
+    /**
+     * Set request timeout value (in seconds).
+     *
+     * @param int $timeout
+     *
+     * @return int
+     */
     public function setTimeout($timeout)
     {
-        $timeout = is_scalar ($timeout) ? (int) $timeout : 0;
+        $timeout = is_scalar($timeout) ? (int) $timeout : 0;
+
         return $timeout < 1
             ? $this->timeout
             : $this->timeout = $timeout;
     }
 
-/**
- * Execute API command
- *
- * @param Command $command
- * @access public
- * @return \DatingVIP\API\Response
- * @throws \Exception
- */
+    /**
+     * Execute API command.
+     *
+     * @param Command $command
+     *
+     * @return \DatingVIP\API\Response
+     *
+     * @throws \Exception
+     */
     public function execute(Command $command)
     {
-        if (!$command->isValid ()) {
-            throw new Exception ('Invalid API command supplied');
+        if (!$command->isValid()) {
+            throw new Exception('Invalid API command supplied');
         }
 
-        $result = $this->curl()->post ($this->getUrl ($command), $command->getData ());
+        $result = $this->curl()->post($this->getUrl($command), $command->getData());
+        $type = $this->getResponseType();
 
-        return new Response ($result->getData ());
+        return new Response($result->getData(), $type);
     }
 
-/**
- * Get browser for making API requests
- * - create an instance
- * - assign auth data if we have it
- *
- * @param void
- * @access private
- * @return cURL
- */
+    /**
+     * Return expected response type based on URL.
+     *
+     * @param void
+     *
+     * @return string
+     */
+    private function getResponseType()
+    {
+        list($path, $type) = explode('.', basename($this->url), 2);
+
+        return $type;
+    }
+
+    /**
+     * Get browser for making API requests
+     * - create an instance
+     * - assign auth data if we have it.
+     *
+     * @param void
+     *
+     * @return cURL
+     */
     private function curl()
     {
-        if (! ($this->curl instanceof cURL)) {
-            $this->curl = new cURL ();
+        if (!($this->curl instanceof cURL)) {
+            $this->curl = new cURL();
         }
 
-        if ($this->hasAuth ()) {
-            $this->curl->setCredentials ($this->user, $this->pass);
+        if ($this->hasAuth()) {
+            $this->curl->setCredentials($this->user, $this->pass);
         }
 
-        return $this->curl->setTimeout ($this->timeout);
+        return $this->curl->setTimeout($this->timeout);
     }
 
-/**
- * Get API URL for given command
- *
- * @param Command $command
- * @access protected
- * @return string
- */
+    /**
+     * Get API URL for given command.
+     *
+     * @param Command $command
+     *
+     * @return string
+     */
     protected function getUrl(Command $command)
     {
         return $this->url
-            . (stripos ($this->url, '?') !== false ? '&' : '?')
-            . http_build_query ([self::COMMAND => $command->getName ()]);
+            .(stripos($this->url, '?') !== false ? '&' : '?')
+            .http_build_query([self::COMMAND => $command->getName()]);
     }
 
-/**
- * Check if API has auth data set
- * - checks if user and pass aren't empty
- *
- * @param void
- * @access private
- * @return bool
- */
+    /**
+     * Check if API has auth data set
+     * - checks if user and pass aren't empty.
+     *
+     * @param void
+     *
+     * @return bool
+     */
     private function hasAuth()
     {
-        return !empty ($this->user) && !empty ($this->pass);
+        return !empty($this->user) && !empty($this->pass);
     }
-
 }
