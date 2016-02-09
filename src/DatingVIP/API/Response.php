@@ -123,6 +123,18 @@ class Response
     }
 
     /**
+     * Set status.
+     *
+     * @param status $status
+     *
+     * @return mixed
+     */
+    public function setStatus($status)
+    {
+        return $this->setMeta(__FUNCTION__, $status);
+    }
+
+    /**
      * Set errors.
      *
      * @param mixed $errors
@@ -204,6 +216,18 @@ class Response
     public function getTexts()
     {
         return $this->hasTexts() ? $this->data[self::KEY_TEXTS] : null;
+    }
+
+    /**
+     * Get status.
+     *
+     * @param void
+     *
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->getMeta(__FUNCTION__);
     }
 
     /**
