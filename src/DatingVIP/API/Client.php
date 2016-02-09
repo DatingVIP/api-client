@@ -130,6 +130,7 @@ class Client
      */
     private function getResponseType()
     {
+        if (false === strpos($this->url, '.')) { return ""; }
         list($path, $type) = explode('.', basename($this->url), 2);
 
         return $type;
