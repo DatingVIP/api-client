@@ -48,6 +48,14 @@ class Client
     protected $timeout = 5;
 
     /**
+     * Cookie storage path
+     *
+     * @var int $cookie [= false]
+     * @access protected
+     */
+    protected $cookie = false;
+
+    /**
      * Instance of DatingVIP\cURL\Request lib.
      *
      * @var Request
@@ -98,6 +106,20 @@ class Client
         return $timeout < 1
             ? $this->timeout
             : $this->timeout = $timeout;
+    }
+
+    /**
+     * Set cookie storage file
+     *
+     * @param string $file
+     * @access public
+     * @return bool
+     */
+    public function setCookieStorage($file)
+    {
+        $this->cookie = (string) $file;
+
+        return !empty($this->cookie);
     }
 
     /**
@@ -155,6 +177,10 @@ class Client
 
         if ($this->hasAuth()) {
             $this->curl->setCredentials($this->user, $this->pass);
+        }
+
+        if ($this->cookie && is_writeable(dirname($this->cookie))) {
+            $this->curl->setCookieStorage($this->cookie);
         }
 
         return $this->curl->setTimeout($this->timeout);
