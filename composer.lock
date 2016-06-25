@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7fba72dc846461773db65ab113aee7d8",
-    "content-hash": "625c6592f5e31f95bce8f001d8df70d6",
+    "hash": "f26c661f44cc937fa49c30977bf3f839",
+    "content-hash": "237dac62cfeb9dca473976438156c69d",
     "packages": [
         {
             "name": "datingvip/curl",
-            "version": "v2.0.3",
+            "version": "v2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DatingVIP/cURL.git",
-                "reference": "86da994ad464593d7979c73bf5d734f07a9c5472"
+                "reference": "ebc4585916164e0c255dee795965be0514389f70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DatingVIP/cURL/zipball/86da994ad464593d7979c73bf5d734f07a9c5472",
-                "reference": "86da994ad464593d7979c73bf5d734f07a9c5472",
+                "url": "https://api.github.com/repos/DatingVIP/cURL/zipball/ebc4585916164e0c255dee795965be0514389f70",
+                "reference": "ebc4585916164e0c255dee795965be0514389f70",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
             "keywords": [
                 "curl"
             ],
-            "time": "2014-06-19 12:15:33"
+            "time": "2016-06-24 20:27:09"
         }
     ],
     "packages-dev": [],
