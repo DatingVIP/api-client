@@ -4,7 +4,7 @@
     "description": "DatingVIP API Client",
     "keywords": ["datingvip", "api client"],
     "homepage": "https://github.com/DatingVIP/api-client",
-    "license": "LGPL-3.0",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Boris Momčilović",
