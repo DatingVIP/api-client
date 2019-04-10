@@ -12,6 +12,8 @@
 
 namespace DatingVIP\API;
 
+use RuntimeException;
+
 class Response
 {
     const KEY_RESULT = 'result';
@@ -32,19 +34,23 @@ class Response
      */
     private $format = 'json';
 
+    private $response = '';
+
     /**
      * Default API response constructor
      * - optionally set response.
      *
      * @param mixed $data   [= '']
      * @param mixed $format [= 'json']
+     * @throws RuntimeException
      */
     public function __construct($data = '', $format = 'json')
     {
         if (!empty($format)) {
             $this->format = $format;
         }
-        $this->set($data);
+        $this->response = $data;
+        $this->set($this->response);
     }
 
     /**
@@ -71,12 +77,16 @@ class Response
         return $result;
     }
 
+    public function getRawResponse () {
+        return $this->response;
+    }
+
     /**
      * Set API response
      * - decode from JSON.
      *
      * @param string $data
-     *
+     * @throws RuntimeException
      * @return bool
      */
     public function set($data)
@@ -92,6 +102,9 @@ class Response
             default:
                 $this->data = json_decode($data, true) ?: [];
                 $result = json_last_error() == JSON_ERROR_NONE;
+                if (empty ($result)) {
+                    throw new RuntimeException ("Error decoding: " . json_last_error_msg ());
+                }
                 break;
         }
 
