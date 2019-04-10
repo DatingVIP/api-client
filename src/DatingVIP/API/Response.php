@@ -36,6 +36,8 @@ class Response
 
     private $response = '';
 
+    private $error = [];
+
     /**
      * Default API response constructor
      * - optionally set response.
@@ -81,6 +83,10 @@ class Response
         return $this->response;
     }
 
+    public function getRawError () {
+        return $this->error;
+    }
+
     /**
      * Set API response
      * - decode from JSON.
@@ -91,6 +97,7 @@ class Response
      */
     public function set($data)
     {
+        $this->error = [];
         $result = null;
         switch ($this->format) {
             case 'nvp':
@@ -103,7 +110,10 @@ class Response
                 $this->data = empty($data) ? [] : (json_decode($data, true) ?: []);
                 $result = json_last_error() == JSON_ERROR_NONE;
                 if (empty ($result)) {
-                    throw new RuntimeException ("Error decoding: " . json_last_error_msg ());
+                    $this->error = [
+                        'error' => json_last_error(),
+                        'msg'   => json_last_error_msg(),
+                    ];
                 }
                 break;
         }
