@@ -56,6 +56,14 @@ class Client
     protected $cookie = false;
 
     /**
+     * User-Agent string
+     *
+     * @var string $user_agent [= 'DatingVIP-API/1.0.10']
+     * @access protected
+     */
+    protected $user_agent = 'DatingVIP-API/1.0.10';
+
+    /**
      * Instance of DatingVIP\cURL\Request lib.
      *
      * @var Request
@@ -181,6 +189,10 @@ class Client
 
         if ($this->cookie && is_writeable(dirname($this->cookie))) {
             $this->curl->setCookieStorage($this->cookie);
+        }
+
+        if ($this->user_agent) {
+            $this->curl->setUseragent($this->user_agent);
         }
 
         return $this->curl->setTimeout($this->timeout);
