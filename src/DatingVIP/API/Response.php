@@ -107,7 +107,7 @@ class Response
 
             case 'json':
             default:
-                $this->data = empty($data) ? [] : (json_decode($data, true) ?: []);
+                $this->data = empty($data) ? [] : (json_decode((string) $data, true) ?: []);
                 $result = json_last_error() == JSON_ERROR_NONE;
                 if (empty ($result)) {
                     $this->error = [
