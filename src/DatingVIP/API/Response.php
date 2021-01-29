@@ -87,6 +87,10 @@ class Response
         return $this->error;
     }
 
+    public function getRawData () {
+        return $this->data;
+    }
+
     /**
      * Set API response
      * - decode from JSON.
