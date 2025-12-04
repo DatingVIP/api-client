@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * API Command.
  *
@@ -7,7 +10,7 @@
  * @author Boris Momčilović <boris@firstbeatmedia.com>
  * @copyright All rights reserved
  *
- * @version 1.0
+ * @version 2.0
  */
 
 namespace DatingVIP\API;
@@ -16,28 +19,20 @@ class Command
 {
     const VAR_CONTROLLER = 'c';
 
-    /**
-     * Command name.
-     *
-     * @var string
-     */
-    private $name;
+    private string $name = '';
 
     /**
-     * Command data.
-     *
-     * @var array
+     * @var array<string, mixed>
      */
-    private $data;
+    private array $data = [];
 
     /**
      * Default command constructor
      * - shorthand to set method.
      *
-     * @param string $name [= '']
-     * @param array  $data [= []]
+     * @param array<string, mixed> $data
      */
-    public function __construct($name = '', array $data = [])
+    public function __construct(string $name = '', array $data = [])
     {
         $this->set($name, $data);
     }
@@ -46,12 +41,9 @@ class Command
      * Set command and optionally set data
      * - return if set command is valid.
      *
-     * @param string $name
-     * @param array  $data [= []]
-     *
-     * @return bool
+     * @param array<string, mixed> $data
      */
-    public function set($name, array $data = [])
+    public function set(string $name, array $data = []): bool
     {
         $this->setName($name);
         $this->setData($data);
@@ -61,38 +53,28 @@ class Command
 
     /**
      * Get command name.
-     *
-     * @param void
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     /**
      * Get command data.
      *
-     * @param void
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function getData()
+    public function getData(): array
     {
-        return (array) $this->data;
+        return $this->data;
     }
 
     /**
      * Check if set name is considered valid
      * - must not be empty
      * - must have a dot.
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return !empty($this->name) && strpos($this->name, '.') !== false;
     }
@@ -100,14 +82,10 @@ class Command
     /**
      * Set command name
      * - return if set name is considered valid.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    private function setName($name)
+    private function setName(string $name): bool
     {
-        $this->name = (string) $name;
+        $this->name = $name;
 
         return $this->isValid();
     }
@@ -115,15 +93,12 @@ class Command
     /**
      * Set command data.
      *
-     * @param array $data
-     *
-     * @return bool
+     * @param array<string, mixed> $data
      */
-    private function setData(array $data)
+    private function setData(array $data): bool
     {
-        $this->data = (array) $data;
+        $this->data = $data;
 
-        // remove reserved stuff
         if (isset($this->data[self::VAR_CONTROLLER])) {
             unset($this->data[self::VAR_CONTROLLER]);
         }
