@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * API Response.
  *
@@ -7,12 +10,10 @@
  * @author Boris Momčilović <boris@firstbeatmedia.com>
  * @copyright All rights reserved
  *
- * @version 1.0
+ * @version 2.0
  */
 
 namespace DatingVIP\API;
-
-use RuntimeException;
 
 class Response
 {
@@ -21,32 +22,24 @@ class Response
     const KEY_META = 'meta';
 
     /**
-     * Array holding response data.
-     *
-     * @var array [= []]
+     * @var array<string, mixed>
      */
-    private $data = [];
+    private array $data = [];
+
+    private string $format = 'json';
+
+    private string $response = '';
 
     /**
-     * Format of response.
-     *
-     * @var string [= 'json']
+     * @var array<string, mixed>
      */
-    private $format = 'json';
-
-    private $response = '';
-
-    private $error = [];
+    private array $error = [];
 
     /**
      * Default API response constructor
      * - optionally set response.
-     *
-     * @param mixed $data   [= '']
-     * @param mixed $format [= 'json']
-     * @throws RuntimeException
      */
-    public function __construct($data = '', $format = 'json')
+    public function __construct(string $data = '', string $format = 'json')
     {
         if (!empty($format)) {
             $this->format = $format;
@@ -57,12 +50,8 @@ class Response
 
     /**
      * Get API response.
-     *
-     * @param void
-     *
-     * @return string
      */
-    public function get()
+    public function get(): string
     {
         $result = null;
         switch ($this->format) {
@@ -79,27 +68,32 @@ class Response
         return $result;
     }
 
-    public function getRawResponse () {
+    public function getRawResponse(): string
+    {
         return $this->response;
     }
 
-    public function getRawError () {
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRawError(): array
+    {
         return $this->error;
     }
 
-    public function getRawData () {
+    /**
+     * @return array<string, mixed>
+     */
+    public function getRawData(): array
+    {
         return $this->data;
     }
 
     /**
      * Set API response
      * - decode from JSON.
-     *
-     * @param string $data
-     * @throws RuntimeException
-     * @return bool
      */
-    public function set($data)
+    public function set(string $data): bool
     {
         $this->error = [];
         $result = null;
@@ -111,9 +105,9 @@ class Response
 
             case 'json':
             default:
-                $this->data = empty($data) ? [] : (json_decode((string) $data, true) ?: []);
-                $result = json_last_error() == JSON_ERROR_NONE;
-                if (empty ($result)) {
+                $this->data = empty($data) ? [] : (json_decode($data, true) ?: []);
+                $result = json_last_error() === JSON_ERROR_NONE;
+                if (empty($result)) {
                     $this->error = [
                         'error' => json_last_error(),
                         'msg'   => json_last_error_msg(),
@@ -127,365 +121,240 @@ class Response
 
     /**
      * Set result.
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
-    public function setResult($data)
+    public function setResult(mixed $data): mixed
     {
         return $this->data[self::KEY_RESULT] = $data;
     }
 
     /**
      * Set texts (translations).
-     *
-     * @param mixed $data
-     *
-     * @return mixed
      */
-    public function setTexts($data)
+    public function setTexts(mixed $data): mixed
     {
         return $this->data[self::KEY_TEXTS] = $data;
     }
 
     /**
      * Set status.
-     *
-     * @param status $status
-     *
-     * @return mixed
      */
-    public function setStatus($status)
+    public function setStatus(mixed $status): mixed
     {
         return $this->setMeta(__FUNCTION__, $status);
     }
 
     /**
      * Set errors.
-     *
-     * @param mixed $errors
-     *
-     * @return mixed
      */
-    public function setErrors($errors)
+    public function setErrors(mixed $errors): mixed
     {
         return $this->setMeta(__FUNCTION__, $errors);
     }
 
     /**
-     * Set result.
-     *
-     * @param mixed $messages
-     *
-     * @return mixed
+     * Set messages.
      */
-    public function setMessages($messages)
+    public function setMessages(mixed $messages): mixed
     {
         return $this->setMeta(__FUNCTION__, $messages);
     }
 
     /**
      * Set warnings.
-     *
-     * @param mixed $warnings
-     *
-     * @return mixed
      */
-    public function setWarnings($warnings)
+    public function setWarnings(mixed $warnings): mixed
     {
         return $this->setMeta(__FUNCTION__, $warnings);
     }
 
     /**
      * Set announcements.
-     *
-     * @param mixed $announcements
-     *
-     * @return mixed
      */
-    public function setAnnouncements($announcements)
+    public function setAnnouncements(mixed $announcements): mixed
     {
         return $this->setMeta(__FUNCTION__, $announcements);
     }
 
     /**
      * Set application (developer) errors.
-     *
-     * @param mixed $app_errors
-     *
-     * @return mixed
      */
-    public function setAppErrors($app_errors)
+    public function setAppErrors(mixed $app_errors): mixed
     {
         return $this->setMeta(str_replace('Errors', '', __FUNCTION__), $app_errors);
     }
 
     /**
      * Get result.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getResult()
+    public function getResult(): mixed
     {
         return $this->hasResult() ? $this->data[self::KEY_RESULT] : null;
     }
 
     /**
      * Get texts.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getTexts()
+    public function getTexts(): mixed
     {
         return $this->hasTexts() ? $this->data[self::KEY_TEXTS] : null;
     }
 
     /**
      * Get status.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getStatus()
+    public function getStatus(): mixed
     {
         return $this->getMeta(__FUNCTION__);
     }
 
     /**
      * Get errors.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getErrors()
+    public function getErrors(): mixed
     {
         return $this->getMeta(__FUNCTION__);
     }
 
     /**
      * Get messages.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getMessages()
+    public function getMessages(): mixed
     {
         return $this->getMeta(__FUNCTION__);
     }
 
     /**
      * Get warnings.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getWarnings()
+    public function getWarnings(): mixed
     {
         return $this->getMeta(__FUNCTION__);
     }
 
     /**
      * Get announcements.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getAnnouncements()
+    public function getAnnouncements(): mixed
     {
         return $this->getMeta(__FUNCTION__);
     }
 
     /**
      * Get application (developer) errors.
-     *
-     * @param void
-     *
-     * @return mixed
      */
-    public function getAppErrors()
+    public function getAppErrors(): mixed
     {
         return $this->getMeta(str_replace('Errors', '', __FUNCTION__));
     }
 
     /**
      * Do we have result?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasResult()
+    public function hasResult(): bool
     {
         return array_key_exists(self::KEY_RESULT, $this->data);
     }
 
     /**
      * Do we have translations (texts)?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasTexts()
+    public function hasTexts(): bool
     {
         return array_key_exists(self::KEY_TEXTS, $this->data);
     }
 
     /**
      * Do we have errors?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return $this->hasMeta(__FUNCTION__);
     }
 
     /**
      * Do we have messages?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasMessages()
+    public function hasMessages(): bool
     {
         return $this->hasMeta(__FUNCTION__);
     }
 
     /**
      * Do we have warnings?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasWarnings()
+    public function hasWarnings(): bool
     {
         return $this->hasMeta(__FUNCTION__);
     }
 
     /**
      * Do we have announcements?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasAnnouncements()
+    public function hasAnnouncements(): bool
     {
         return $this->hasMeta(__FUNCTION__);
     }
 
     /**
      * Do we have application (developer) errors?
-     *
-     * @param void
-     *
-     * @return bool
      */
-    public function hasAppErrors()
+    public function hasAppErrors(): bool
     {
         return $this->hasMeta(str_replace('Errors', '', __FUNCTION__));
     }
 
     /**
      * Set some type of meta data into response.
-     *
-     * @param string $where
-     * @param mixed  $data
-     *
-     * @return bool
      */
-    private function setMeta($where, $data)
+    private function setMeta(string $where, mixed $data): mixed
     {
         return $this->setInData(self::KEY_META, $this->methodToKey($where), $data);
     }
 
     /**
      * Get some type of meta data shorthand methods.
-     *
-     * @param string $what
-     *
-     * @return bool
      */
-    private function getMeta($what)
+    private function getMeta(string $what): mixed
     {
         return $this->getFromData(self::KEY_META, $this->methodToKey($what));
     }
 
     /**
      * Check existence of some type of meta data shorthand methods.
-     *
-     * @param string $what
-     *
-     * @return bool
      */
-    private function hasMeta($what)
+    private function hasMeta(string $what): bool
     {
         return $this->hasData(self::KEY_META, $this->methodToKey($what));
     }
 
     /**
      * Convert method name to apropriate data key.
-     *
-     * @param string $method
-     *
-     * @return string
      */
-    private function methodToKey($method)
+    private function methodToKey(string $method): string
     {
         return strtolower(substr($method, 3));
     }
 
     /**
      * Get specific type of data from specific key from response.
-     *
-     * @param string $type
-     * @param string $key
-     *
-     * @return mixed
      */
-    private function getFromData($type, $key)
+    private function getFromData(string $type, string $key): mixed
     {
         return $this->hasData($type, $key) ? $this->data[$type][$key] : null;
     }
 
     /**
      * Check existence of specific type of data from specific key from response.
-     *
-     * @param string $type
-     * @param string $key
-     *
-     * @return mixed
      */
-    private function hasData($type, $key)
+    private function hasData(string $type, string $key): bool
     {
         return isset($this->data[$type]) && isset($this->data[$type][$key]);
     }
 
     /**
      * Set specific category of data to specific key within response.
-     *
-     * @param string $type
-     * @param string $key
-     * @param mixed  $data
-     *
-     * @return mixed
      */
-    private function setInData($type, $key, $data)
+    private function setInData(string $type, string $key, mixed $data): mixed
     {
         return $this->data[$type][$key] = $data;
     }

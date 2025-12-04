@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * API Client.
  *
@@ -7,7 +10,7 @@
  * @author Boris Momčilović <boris@firstbeatmedia.com>
  * @copyright All rights reserved
  *
- * @version 1.0
+ * @version 2.0
  */
 
 namespace DatingVIP\API;
@@ -19,113 +22,63 @@ class Client
 {
     const COMMAND = 'cmd';
 
-    /**
-     * API URL.
-     *
-     * @var string
-     */
-    protected $url;
+    protected string $url = '';
+
+    protected string $user = '';
+
+    protected string $pass = '';
 
     /**
-     * API authorization user.
-     *
-     * @var string
+     * Request timeout in seconds.
      */
-    protected $user;
+    protected int $timeout = 5;
 
     /**
-     * API authorization pass.
-     *
-     * @var string
+     * Cookie storage path.
      */
-    protected $pass;
+    protected string|false $cookie = false;
 
-    /**
-     * API authorization pass.
-     *
-     * @var int [= 5]
-     */
-    protected $timeout = 5;
+    protected string $user_agent = 'DatingVIP-API/2.0.0';
 
-    /**
-     * Cookie storage path
-     *
-     * @var int $cookie [= false]
-     * @access protected
-     */
-    protected $cookie = false;
-
-    /**
-     * User-Agent string
-     *
-     * @var string $user_agent [= 'DatingVIP-API/1.0.10']
-     * @access protected
-     */
-    protected $user_agent = 'DatingVIP-API/1.0.10';
-
-    /**
-     * Instance of DatingVIP\cURL\Request lib.
-     *
-     * @var Request
-     */
-    private $curl;
+    private ?cURL $curl = null;
 
     /**
      * Set API url.
-     *
-     * @param string $url
-     *
-     * @return bool
      */
-    public function setUrl($url)
+    public function setUrl(string $url): bool
     {
-        $this->url = (string) $url;
+        $this->url = $url;
 
         return !empty($this->url);
     }
 
     /**
      * Set auth data for API.
-     *
-     * @param string $user
-     * @param string $pass
-     *
-     * @return bool
      */
-    public function setAuth($user, $pass)
+    public function setAuth(string $user, string $pass): bool
     {
-        $this->user = (string) $user;
-        $this->pass = (string) $pass;
+        $this->user = $user;
+        $this->pass = $pass;
 
         return $this->hasAuth();
     }
 
     /**
      * Set request timeout value (in seconds).
-     *
-     * @param int $timeout
-     *
-     * @return int
      */
-    public function setTimeout($timeout)
+    public function setTimeout(int $timeout): int
     {
-        $timeout = is_scalar($timeout) ? (int) $timeout : 0;
-
         return $timeout < 1
             ? $this->timeout
             : $this->timeout = $timeout;
     }
 
     /**
-     * Set cookie storage file
-     *
-     * @param string $file
-     * @access public
-     * @return bool
+     * Set cookie storage file.
      */
-    public function setCookieStorage($file)
+    public function setCookieStorage(string $file): bool
     {
-        $this->cookie = (string) $file;
+        $this->cookie = $file;
 
         return !empty($this->cookie);
     }
@@ -133,13 +86,9 @@ class Client
     /**
      * Execute API command.
      *
-     * @param Command $command
-     *
-     * @return \DatingVIP\API\Response
-     *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function execute(Command $command)
+    public function execute(Command $command): Response
     {
         if (!$command->isValid()) {
             throw new Exception('Invalid API command supplied');
@@ -153,12 +102,8 @@ class Client
 
     /**
      * Return expected response type based on URL.
-     *
-     * @param void
-     *
-     * @return string
      */
-    private function getResponseType()
+    private function getResponseType(): string
     {
         if (false === strpos($this->url, '.')) {
             return "";
@@ -172,12 +117,8 @@ class Client
      * Get browser for making API requests
      * - create an instance
      * - assign auth data if we have it.
-     *
-     * @param void
-     *
-     * @return cURL
      */
-    private function curl()
+    private function curl(): cURL
     {
         if (!($this->curl instanceof cURL)) {
             $this->curl = new cURL();
@@ -187,7 +128,7 @@ class Client
             $this->curl->setCredentials($this->user, $this->pass);
         }
 
-        if ($this->cookie && is_writeable(dirname($this->cookie))) {
+        if ($this->cookie && is_writable(dirname($this->cookie))) {
             $this->curl->setCookieStorage($this->cookie);
         }
 
@@ -200,12 +141,8 @@ class Client
 
     /**
      * Get API URL for given command.
-     *
-     * @param Command $command
-     *
-     * @return string
      */
-    protected function getUrl(Command $command)
+    protected function getUrl(Command $command): string
     {
         return $this->url
             .(stripos($this->url, '?') !== false ? '&' : '?')
@@ -215,12 +152,8 @@ class Client
     /**
      * Check if API has auth data set
      * - checks if user and pass aren't empty.
-     *
-     * @param void
-     *
-     * @return bool
      */
-    private function hasAuth()
+    private function hasAuth(): bool
     {
         return !empty($this->user) && !empty($this->pass);
     }
