@@ -65,7 +65,7 @@ class Response
                 break;
         }
 
-        return $result;
+        return (string) $result;
     }
 
     public function getRawResponse(): string
