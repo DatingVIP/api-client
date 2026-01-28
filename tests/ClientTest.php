@@ -6,8 +6,8 @@ namespace DatingVIP\API\Tests;
 
 use DatingVIP\API\Client;
 use DatingVIP\API\Command;
-use DatingVIP\API\Response;
 use Exception;
+use ReflectionClass;
 use RuntimeException;
 
 class ClientTest extends TestCase
@@ -179,9 +179,8 @@ class ClientTest extends TestCase
 
     public function testUserAgentVersion(): void
     {
-        $reflection = new \ReflectionClass(Client::class);
+        $reflection = new ReflectionClass(Client::class);
         $property = $reflection->getProperty('user_agent');
-        $property->setAccessible(true);
 
         $client = new Client();
         $userAgent = $property->getValue($client);
